@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'item.apps.ItemConfig',
     'homePage.apps.HomepageConfig',
     'login.apps.LoginConfig',
     'django.contrib.admin',
@@ -54,7 +55,9 @@ ROOT_URLCONF = 'assignment.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR + '\\homePage\\templates\\',],
+        'DIRS': [BASE_DIR + '\\homePage\\templates\\',
+		BASE_DIR + '\\login\\templates\\login\\',
+                 BASE_DIR + '\\item\\templates\\',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

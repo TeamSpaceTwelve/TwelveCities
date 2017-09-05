@@ -5,6 +5,8 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 
 # Create your views here.
-def loginPage(request):
-    template = loader.get_template('login/login.html')
-    return render(request, 'login.html', context=None)
+def itemList(request):
+    return render(request, 'itemList.html', context=None)
+
+def itemPage(request):
+    return HttpResponse('a specific item will be here')
