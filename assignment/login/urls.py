@@ -5,4 +5,5 @@ from . import views
 app_name = 'login'
 urlpatterns = [
     url(r'^$', views.loginPage, name='loginPage'),
+    url('account/', views.accountPage, name='accountPage'),
 ]

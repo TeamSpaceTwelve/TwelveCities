@@ -7,7 +7,62 @@ from django.contrib import messages
 
 from .models import account
 
-from .forms import NameForm, ContactForm, CreateAccount
+from .forms import NameForm, ContactForm, CreateAccount, Login
+
+def loginPage(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = CreateAccount(request.POST)
+        form2 = Login(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            if account.objects.filter(username = form2.data['username']).exists():
+                messages.info(request, 'Username already taken.')
+            else:
+                if form2.data['password'] == form2.data['Retype']:
+                    if form.data['password'] == form.data['Retype']:
+                        data = account(username = form.data['username'],
+                                       email = form.data['email'],
+                                       password = form.data['password'],
+                                       address = form.data['address'],
+                                       type = form.data['Type'])
+                        data.save()
+                        # process the data in form.cleaned_data as required
+                        # ...
+                        # redirect to a new URL:
+                        return render(request, 'login.html')
+                else:
+                    messages.info(request, 'Passwords do not match')
+        elif form2.is_valid():
+            if account.objects.filter(username = form2.data['username']).exists():
+                if form2.data['password'] == account.objects.values_list('password', flat=True).get(username = form2.data['username']):
+                    print('logged in successfully')
+                else:
+                    print('incorrect password')
+            else:
+                print('username does not exist')
+##            try:
+##                account.objects.get(username = form2.data['username'])
+##                print('bob')
+##            except:
+##                print('no')
+            return render(request, 'name.html')
+            
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = CreateAccount()
+        form2 = Login()
+
+    return render(request, 'name.html', {'form': form, 'form2': form2})
+
+def accountPage(request):
+    return HttpResponse('this is your account page')
+
+
+
+##IM KEEPING THIS SH!T HERE JUST IN CASE
+##
 
 # Create your views here.
 ##def loginPage(request):
@@ -18,29 +73,12 @@ from .forms import NameForm, ContactForm, CreateAccount
 ##    template = loader.get_template('login/login.html')
 ##    return render(request, 'login.html')
 
-def loginPage(request):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = CreateAccount(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            if form.data['password'] == form.data['Retype']:
-                data = account(username = form.data['username'],
-                               email = form.data['email'],
-                               password = form.data['password'],
-                               address = form.data['address'],
-                               type = form.data['Type'])
-                data.save()
-                # process the data in form.cleaned_data as required
-                # ...
-                # redirect to a new URL:
-                return render(request, 'login.html')
-            else:
-                messages.info(request, 'Passwords do no match')
-
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = CreateAccount()
-
-    return render(request, 'name.html', {'form': form})
+##def loginPage(request):
+##    if request.method == 'POST':
+##        form = Login(request.POST)
+##        if form.is_valid():
+##                return render(request, 'login.html')
+##    else:
+##        form = Login()
+##
+##    return render(request, 'login2.html', {'form': form})
