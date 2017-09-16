@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 from django.http import HttpResponse
-from django.template import loader
+from django.template import loader, Context, RequestContext
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
@@ -31,22 +31,21 @@ def loginPage(request):
                         # process the data in form.cleaned_data as required
                         # ...
                         # redirect to a new URL:
-                        return render(request, 'login.html')
+                        return redirect('/login/account/'+form1.data['username'], permanent=True)
                 else:
                     messages.info(request, 'Passwords do not match')
         elif form2.is_valid():
             if account.objects.filter(username = form2.data['username']).exists():
+                print('yes')
                 if form2.data['password'] == account.objects.values_list('password', flat=True).get(username = form2.data['username']):
                     print('logged in successfully')
+                    return redirect('/login/account/'+form2.data['username'], permanent=True)
                 else:
                     print('incorrect password')
+                    #return redirect('/')
             else:
                 print('username does not exist')
-##            try:
-##                account.objects.get(username = form2.data['username'])
-##                print('bob')
-##            except:
-##                print('no')
+               # return redirect('/')
             return render(request, 'name.html')
             
     # if a GET (or any other method) we'll create a blank form
@@ -56,8 +55,9 @@ def loginPage(request):
 
     return render(request, 'name.html', {'form': form, 'form2': form2})
 
-def accountPage(request):
-    return HttpResponse('this is your account page')
+def accountPage(request, id):
+    #return HttpResponse('this is ' + id + "'s account page")
+    return render_to_response('account.html', {'id':id})
 
 
 
