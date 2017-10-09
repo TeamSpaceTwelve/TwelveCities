@@ -1,0 +1,24 @@
+{% extends 'loginlanding/base.html' %}
+
+{% block base %}
+
+    <table class="table table-striped">
+        <tr>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Phone No#</th>
+            <th></th>
+        </tr>
+        {% for facilities in all_facilities %}
+            <tr>
+            <td>{{facilities.facilityType}}</td>
+            <td>{{ facilities.name }}</td>
+            <td>{{ facilities.address }}</td>
+            <td>{{ facilities.phone }}</td>
+            <td><a href="/loginlanding/{{ facilities.id }}/">info</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
