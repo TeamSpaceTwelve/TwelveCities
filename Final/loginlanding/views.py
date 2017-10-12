@@ -16,7 +16,7 @@ def index(request):
 
 def hoteldetail(request, specific_id):
     template = loader.get_template('loginlanding/detail.html')
-    obj_details = Hotels.objects.filter(id=specific_id),
+    obj_details = facilities.objects.filter(id=specific_id),
     context = {
         'obj_details': obj_details,
     }

@@ -24,3 +24,7 @@ class Login(forms.Form):
     username = forms.CharField(max_length=100)
     password = forms.CharField(widget=forms.PasswordInput, max_length=100)
 
+class UpdateAccount(forms.Form):
+    email = forms.EmailField()
+    address = forms.CharField(max_length=200)
+    Type = forms.ChoiceField(choices = ROLES)

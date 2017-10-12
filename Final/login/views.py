@@ -4,10 +4,11 @@ from django.template import loader, Context, RequestContext
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django.forms import formset_factory
 
 from .models import account
 
-from .forms import NameForm, ContactForm, CreateAccount, Login
+from .forms import NameForm, ContactForm, CreateAccount, Login, UpdateAccount
 
 def loginPage(request):
     # if this is a POST request we need to process the form data
@@ -31,7 +32,7 @@ def loginPage(request):
                         # process the data in form.cleaned_data as required
                         # ...
                         # redirect to a new URL:
-                        return redirect('/login/account/'+form1.data['username'], permanent=True)
+                        return redirect('/login/account/'+form.data['username'], permanent=True)
                 else:
                     messages.info(request, 'Passwords do not match')
         elif form2.is_valid():
@@ -56,8 +57,23 @@ def loginPage(request):
     return render(request, 'name.html', {'form': form, 'form2': form2})
 
 def accountPage(request, id):
-    #return HttpResponse('this is ' + id + "'s account page")
-    return render_to_response('account.html', {'id':id})
+    user = account.objects.get(username = id)
+    if request.method == 'POST':
+        form = UpdateAccount(request.POST)
+        if form.is_valid():
+            #data = user(email = form.data['email'],
+             #              address = form.data['address'],
+              #             type = form.data['Type'])
+            user.email = form.data['email']
+            user.address = form.data['address']
+            user.type = form.data['Type']
+            user.save()
+    else:
+        form = UpdateAccount(initial={'email': user.email,
+                                      'address': user.address,
+                                      'Type': user.type})
+    return render(request, 'account.html', {'form': form, 'id':id})
+#_to_response
 
 
 
