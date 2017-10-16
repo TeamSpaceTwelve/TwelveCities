@@ -4,7 +4,7 @@ from django.template import loader, Context, RequestContext
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
-from django.forms import formset_factory
+from django.contrib.auth.models import User
 
 from .models import account
 
@@ -37,10 +37,14 @@ def loginPage(request):
                     messages.info(request, 'Passwords do not match')
         elif form2.is_valid():
             if account.objects.filter(username = form2.data['username']).exists():
-                print('yes')
                 if form2.data['password'] == account.objects.values_list('password', flat=True).get(username = form2.data['username']):
-                    print('logged in successfully')
-                    return redirect('/login/account/'+form2.data['username'], permanent=True)
+                    user = account.objects.get(username = form2.data['username'])
+                    if account.objects.get(username = form2.data['username']).type == '3':
+                        try:
+                            User.objects.create_superuser(user.username, user.email, user.password)
+                            return redirect('/login/account/'+form2.data['username'], permanent=True)
+                        except:
+                            return redirect('/login/account/'+form2.data['username'], permanent=True)
                 else:
                     print('incorrect password')
                     #return redirect('/')
@@ -72,7 +76,10 @@ def accountPage(request, id):
         form = UpdateAccount(initial={'email': user.email,
                                       'address': user.address,
                                       'Type': user.type})
-    return render(request, 'account.html', {'form': form, 'id':id})
+    if user.type == '3':
+        return render(request, 'adminAccount.html', {'form': form, 'id':id})
+    else:
+        return render(request, 'account.html', {'form': form, 'id':id})
 #_to_response
 
 
