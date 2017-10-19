@@ -19,6 +19,8 @@ def index(request):
 
         elif request.user.profile.role == '2':
             return redirect('/loginlanding/business')
+        else:
+            return redirect('/loginlanding/all')
 
     else:
         if request.method == 'POST':

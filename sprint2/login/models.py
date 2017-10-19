@@ -23,5 +23,7 @@ roles = (
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     role = models.CharField(max_length=1, choices=roles)
+    email = models.CharField(max_length=200, null=True)
+    address = models.CharField(max_length=200, null=True)
 
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])

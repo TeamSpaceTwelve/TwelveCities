@@ -17,11 +17,24 @@
             <td>{{ details.phone }}</td>
             <td>{{ details.longitude }},{{ details.latitude }}</td>
         </tr>
-
-        <div id="mapdiv"></div>
-				<script type="text/javascript" src="\proj230\JS\mapScripts.js"></script>
-				<script> initmap(' . $row["latitude"] . ',' . $row["longitude"] . ',"'.$parkName.'")</script>';
-        <div id="parkInfo">
     </table>
+
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var location = {lat: {{ details.latitude }}, lng: {{ details.longitude }}};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: location
+        });
+        var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSAW8cLdOACGrvuAAR60JIKYqUp73FwoM&callback=initMap">
+    </script>
 
 {% endblock %}
