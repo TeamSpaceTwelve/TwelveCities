@@ -1,0 +1,27 @@
+{% extends 'loginlanding/base.html' %}
+
+{% block base %}
+
+    <table class="table table-striped">
+        <tr>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Phone No#</th>
+            <th>Co-ordinates</th>
+        </tr>
+        <tr>
+            <td>{{ details.name }}</td>
+            <td>{{ details.facilityType }}</td>
+            <td>{{ details.address }}</td>
+            <td>{{ details.phone }}</td>
+            <td>{{ details.longitude }},{{ details.latitude }}</td>
+        </tr>
+
+        <div id="mapdiv"></div>
+				<script type="text/javascript" src="\proj230\JS\mapScripts.js"></script>
+				<script> initmap(' . $row["latitude"] . ',' . $row["longitude"] . ',"'.$parkName.'")</script>';
+        <div id="parkInfo">
+    </table>
+
+{% endblock %}
