@@ -28,3 +28,4 @@ class UpdateAccount(forms.Form):
     email = forms.EmailField()
     address = forms.CharField(max_length=200)
     Type = forms.ChoiceField(choices = ROLES)
+

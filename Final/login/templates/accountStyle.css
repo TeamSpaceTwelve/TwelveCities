@@ -1,8 +1,4 @@
-{% extends 'base.html' %}
-{% block base %}
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-	<style>
-		h1{
+	h1{
 			transform: translate(46%, 0%);
 		}
 		h2{
@@ -48,20 +44,3 @@
 		div.item{
 			transform: translate(1%, 0);
 		}
-
-	</style>
-	<div class="item">
-	<a href="/item/in/{{ id }}" class="w3-btn w3-grey w3-round">View list of items</a></div>
-
-	<div class="admin">Log into admin area: <a href="http://localhost:8000/admin" class="w3-btn w3-grey w3-round">Log In</a></div>
-	<h1>Hello {{ id }}</h1>
-	<h2>This page can be used to update your account information</h2>
-
-	<div class="details">
-	<form action="" method="post">
-	{% csrf_token %}
-	{{ form.as_p }}
-	<input type="submit" value="Update Information" />
-	</form>
-	</div>
-{% endblock%}

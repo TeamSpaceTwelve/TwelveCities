@@ -1,20 +1,34 @@
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Create Account" />
-	
-	{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+{% extends 'base.html' %}
+{% block base %}
+<style>
+    div.create {
+        transform: translate(30%, 0%);
+    }
 
-</form>
+    div.login{
+        transform: translate(50%, -200%);
+    }
+</style>
+<div class="create">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Create Account" />
 
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form2.as_p }}
-    <input type="submit" value="Login" />
-</form>
+        {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    </form>
+</div>
+<div class="login">
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form2.as_p }}
+        <input type="submit" value="Login" />
+    </form>
+</div>
+{% endblock%}
