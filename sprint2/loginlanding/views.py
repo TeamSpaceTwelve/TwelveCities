@@ -2,10 +2,11 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.contrib.postgres import *
-from .models import facilities
-from .forms import search
+from .models import facilities, reviews
+import login
+from .forms import search, review
 from itertools import chain
-from login.models import UserProfile
+from login.models import UserProfile, User
 
 
 def index(request):
@@ -53,7 +54,11 @@ def landingstudent(request):
 
     facility1 = facilities.objects.filter(facilityType__icontains='Library')
     facility2 = facilities.objects.filter(facilityType__icontains='University')
-    all_facilities = list(chain(facility1, facility2)
+    facility6 = facilities.objects.filter(facilityType__icontains='Park')
+    facility3 = facilities.objects.filter(facilityType__icontains='Zoo')
+    facility4 = facilities.objects.filter(facilityType__icontains='Museum')
+    facility5 = facilities.objects.filter(facilityType__icontains='Mall')
+    all_facilities = list(chain(facility1, facility2, facility3, facility4, facility5, facility6)
                           )
     template = loader.get_template('loginlanding/index.html')
 
@@ -74,7 +79,12 @@ def landingtourist(request):
     else:
         form = search()
 
-        all_facilities = facilities.objects.filter(facilityType__icontains='Hotel')
+        facility1 = facilities.objects.filter(facilityType__icontains='Hotel')
+        facility2 = facilities.objects.filter(facilityType__icontains='Park')
+        facility3 = facilities.objects.filter(facilityType__icontains='Zoo')
+        facility4 = facilities.objects.filter(facilityType__icontains='Museum')
+        facility5 = facilities.objects.filter(facilityType__icontains='Mall')
+        all_facilities = list(chain(facility1, facility2, facility3, facility4, facility5))
     template = loader.get_template('loginlanding/index.html')
 
     context = {
@@ -96,7 +106,11 @@ def landingbusiness(request):
 
         facility1 = facilities.objects.filter(facilityType__icontains='Hotel')
         facility2 = facilities.objects.filter(facilityType__icontains='Industry')
-        all_facilities = list(chain(facility1, facility2))
+        facility6 = facilities.objects.filter(facilityType__icontains='Park')
+        facility3 = facilities.objects.filter(facilityType__icontains='Zoo')
+        facility4 = facilities.objects.filter(facilityType__icontains='Museum')
+        facility5 = facilities.objects.filter(facilityType__icontains='Mall')
+        all_facilities = list(chain(facility1, facility2, facility3, facility4, facility5, facility6))
 
     template = loader.get_template('loginlanding/index.html')
 
@@ -130,8 +144,23 @@ def landingall(request):
 def hoteldetail(request, specific_id):
     template = 'loginlanding/detail.html'
     details = facilities.objects.get(id=specific_id)
-    print(details.address)
-    return render(request, template, {'details': details})
+    userReviews = reviews.objects.filter(facilityID=specific_id)
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = review(request.POST)
+            if form.is_valid():
+                data = reviews(facilityID=specific_id,
+                               review=form.data['review'],
+                               score=form.data['score'],
+                               user=request.user.id)
+                data.save()
+        else:
+            form = review()
+        print(details.address)
+        return render(request, template, {'details': details, 'form': form, 'reviews': userReviews})
+    else:
+        print(details.address)
+        return render(request, template, {'details': details, 'reviews': userReviews})
 
 
 def results(request, item):

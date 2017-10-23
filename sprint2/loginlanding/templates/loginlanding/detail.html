@@ -2,6 +2,10 @@
 
 {% block base %}
 
+<style>
+
+</style>
+
     <table class="table table-striped">
         <tr>
             <th>Type</th>
@@ -36,5 +40,22 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSAW8cLdOACGrvuAAR60JIKYqUp73FwoM&callback=initMap">
     </script>
+
+    <div id="reviews">
+        <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Review" />
+        </form>
+    </div><p>
+
+<div id="review">
+     {% for review in reviews %}
+            <tr>
+            <td>{{ review.review }}</td>
+            <td>{{ review.score }}/5</td>
+            </tr><p>
+    {% endfor %}
+</p></div>
 
 {% endblock %}

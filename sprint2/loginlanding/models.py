@@ -11,12 +11,17 @@ class facilities(models.Model):
     facilityType = models.CharField(max_length=200)
     phone = models.CharField(max_length=10)
     description = models.TextField
-    latitude = models.DecimalField(max_digits=8, decimal_places=4)
-    longitude = models.DecimalField(max_digits=8, decimal_places=4)
+    latitude = models.DecimalField(max_digits=10, decimal_places=7)
+    longitude = models.DecimalField(max_digits=10, decimal_places=7)
 
     def __str__(self):
         return self.name
 
+class reviews(models.Model):
+    facilityID = models.PositiveIntegerField()
+    review = models.TextField()
+    score = models.PositiveSmallIntegerField()
+    user = models.PositiveIntegerField()
 
 class Hotels(models.Model):
     id = models.AutoField(primary_key=True)
