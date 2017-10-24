@@ -1,0 +1,14 @@
+from django.test import TestCase
+from myapp.models import 
+
+class AccountTestCase(TestCase):
+    def setUp(self):
+        Account.objects.create(username="bob", password="password").save()
+        Account.objects.create(name="steve", password="bob").save()
+
+    def test_login(self):
+        """account has password"""
+        bob = Account.objects.get(username="bob")
+        steve = Account.objects.get(username="steve")
+        self.assertEqual(bob.password(), 'Bob has an account with password "password"')
+        
