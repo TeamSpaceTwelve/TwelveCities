@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Smart City</title>
+<!-- Loads the path to your static files -->
+{% load static %}
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'landing/style.css' %}"/>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/home">Team 12 Smart City</a>
+        </div>
+		<div class="title">
+			 <h1>Team 12 Smart City</h1>
+		</div>      
+    </div>
+</nav>
+
+<body>
+{% block base %}
+
+{% endblock %}
+</body>

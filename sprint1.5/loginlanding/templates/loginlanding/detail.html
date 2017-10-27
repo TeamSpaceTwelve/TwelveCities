@@ -1,0 +1,40 @@
+{% extends 'loginlanding/base.html' %}
+
+{% block base %}
+
+    <table class="table table-striped">
+        <tr>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Phone No#</th>
+            <th>Co-ordinates</th>
+        </tr>
+        <tr>
+            <td>{{ details.name }}</td>
+            <td>{{ details.facilityType }}</td>
+            <td>{{ details.address }}</td>
+            <td>{{ details.phone }}</td>
+            <td>{{ details.longitude }},{{ details.latitude }}</td>
+        </tr>
+
+    </table>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var uluru = {lat: {{ details.latitude }}, lng: {{ details.longitude }}};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSAW8cLdOACGrvuAAR60JIKYqUp73FwoM&callback=initMap">
+    </script>s
+
+{% endblock %}
